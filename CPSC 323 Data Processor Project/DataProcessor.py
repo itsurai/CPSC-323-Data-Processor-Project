@@ -1,4 +1,6 @@
 import re
+from tabulate import tabulate
+
 
 #Main Function
 def main():
@@ -22,6 +24,9 @@ def main():
     print("Processed input\n\n", debugOutput)
     tokenizeResult = tokenizer(debugOutput)
     print("\nTokenized code\n", tokenizeResult)
+
+    print("\nTabular Form:\n")
+    printTable(tokenizeResult)
 
 #Remove whitespace and comments
 def processUserInput(inputCode):
@@ -78,20 +83,13 @@ def tokenizer(processedInput):
     return tokens
 
 
-
+#Finally put the tokens into a table so its easier to read.
+def printTable(tokens):
+    #Convert the dictionary into rows where each row contains the category and the tokens joined by commas
+    table_data = [[category, ', '.join(token_list)] for category, token_list in tokens.items()]
     
-
-
-
-
-
-
-
-
-
-
-
-
-
+    #Print the table using tabulate
+    print(tabulate(table_data, headers=["Category", "Tokens"], tablefmt="grid"))
+    
 if __name__ == "__main__":
     main()
