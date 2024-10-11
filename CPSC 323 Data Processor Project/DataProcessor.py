@@ -2,7 +2,6 @@ import re
 
 #Main Function
 def main():
-    print("Debug line 1")
 
     #Anything that you want to remove extra spaces from & tokenize goes in the string 'inputCode'
     inputCode = """
@@ -18,9 +17,11 @@ def main():
     print(add(5, 3))
     """
 
-    #Show the output from specific functions. Will remove later.
+    #Show the output from specific functions.
     debugOutput = processUserInput(inputCode)
-    print(debugOutput)
+    print("Processed input\n\n", debugOutput)
+    tokenizeResult = tokenizer(debugOutput)
+    print("\nTokenized code\n", tokenizeResult)
 
 #Remove whitespace and comments
 def processUserInput(inputCode):
@@ -41,7 +42,40 @@ def processUserInput(inputCode):
     #Rebuild the processed input.
     return "\n".join(processedInput)
 
+#This function will tokenize the processed input
+def tokenizer(processedInput):
+    #We are establishing the categories. Can be expanded for more complex code.
+    keywords = {'def', 'return', 'print'}
+    operators = {'+', '-', '*', '/', '=', '=='}
+    delimiters = {'(', ')', ':', ','}
+
+    #The tokens dictionary has lists that will fill up as the processed code is tokenized.
+    tokens = {
+        'Keywords': [],
+        'Identifiers': [],
+        'Operators': [],
+        'Delimiters': [],
+        'Literals': []
+    }
+
+    #Regex splits the lines of code into the categories listed above.
+    token_pattern = re.compile(r'\w+|\d+|[+\-*/=()]|[:,]')
+
+    #Tokenizing happensh ere
+    for line in processedInput.splitlines():
+        for word in token_pattern.findall(line):
+            if word in keywords:
+                tokens['Keywords'].append(word)
+            elif word in operators:
+                tokens['Operators'].append(word)
+            elif word in delimiters:
+                tokens['Delimiters'].append(word)
+            elif word.isdigit():
+                tokens['Literals'].append(word)
+            else:
+                tokens['Identifiers'].append(word)  #Any leftovers must be identifiers! 
     
+    return tokens
 
 
 
