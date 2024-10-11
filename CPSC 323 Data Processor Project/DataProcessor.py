@@ -1,3 +1,5 @@
+import re
+
 #Main Function
 def main():
     print("Debug line 1")
@@ -16,9 +18,44 @@ def main():
     print(add(5, 3))
     """
 
-    print(inputCode)
-    print("End of main function")
+    #Show the output from specific functions. Will remove later.
+    debugOutput = processUserInput(inputCode)
+    print(debugOutput)
+
+#Remove whitespace and comments
+def processUserInput(inputCode):
+    processedInput = []
+
+    for line in inputCode.splitlines():
+        #Identify excess empty space between characters and replace with a single space
+        #Remove trailing/leading whitespace.
+        line = re.sub(r'\s+', ' ', line).strip()
+
+        #Match any lines beginning with a '#' and replace it with empty space
+        line = re.sub(r'#.*', '', line)
+
+        #We are skipping over any empty lines here
+        if line:
+            processedInput.append(line)
+
+    #Rebuild the processed input.
+    return "\n".join(processedInput)
+
     
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
 
 
 
